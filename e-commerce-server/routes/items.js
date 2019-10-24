@@ -11,7 +11,7 @@ const defaultSortBy = [
 // get list
 router.get("/", (req, res) => {
   let sortBy = JSON.parse(
-    req.header("sort-by") || JSON.stringify(defaultSortBy)
+    req.header("sortBy") || JSON.stringify(defaultSortBy)
   );
   sortBy = sortBy
     .map(({ field, asc }) => `${asc ? "" : "-"}${field}`)
