@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Title Page-->
+    <title>E-Commerce</title>
+
+    <!-- Font special for pages-->
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Main CSS-->
+    <link href="style.css" rel="stylesheet" media="all" />
+  </head>
+
+  <body>
+    <div class="page-wrapper bg-dark p-t-100 p-b-50">
+      <div class="wrapper wrapper--w900">
+        <div class="card card-6">
+          <div class="card-heading">
+            <h2 class="title">Add Ads</h2>
+          </div>
+          <div class="card-body">
+            <form method="POST">
+              <div class="form-row">
+                <div class="name">Title</div>
+                <div class="value">
+                  <input
+                    class="input--style-6"
+                    type="text"
+                    name="title"
+                    placeholder="Title"
+                  />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="name">Category</div>
+                <div class="value">
+                  <div class="input-group">
+                    <input
+                      class="input--style-6"
+                      type="text"
+                      name="category"
+                      placeholder="Category"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="name">Brand</div>
+                <div class="value">
+                  <div class="input-group">
+                    <input
+                      class="input--style-6"
+                      type="text"
+                      name="Brand"
+                      placeholder="Brand"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="name">Rate</div>
+                <div class="value">
+                  <div class="input-group">
+                    <input
+                      class="input--style-6"
+                      type="number"
+                      min="0"
+                      max="5"
+                      name="Rate"
+                      placeholder="Rate"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="name">Price</div>
+                <div class="value">
+                  <div class="input-group">
+                    <input
+                      class="input--style-6"
+                      type="number"
+                      name="Price"
+                      placeholder="Price"
+                      min="0"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="name">Stock</div>
+                <div class="value">
+                  <div class="input-group">
+                    <input
+                      class="input--style-6"
+                      type="number"
+                      min="0"
+                      max="5"
+                      name="Stock"
+                      placeholder="Stock"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                  <div class="name">Color</div>
+                  <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" id="merah" value="#e66465" >
+                          <label class="custom-control-label " for="merah">Merah &nbsp;&nbsp;</label>
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" id="biru" value="#01508c">
+                          <label class="custom-control-label " for="biru"> Biru &nbsp;&nbsp;</label>
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" id="putih" value="#f5f6f7">
+                          <label class="custom-control-label " for="putih">Putih &nbsp;&nbsp;</label>
+                  </div>
+                  <div class="custom-control custom-checkbox">
+                          <input type="checkbox" class="custom-control-input" id="hitam" value="#030303">
+                          <label class="custom-control-label" for="hitam">Hitam &nbsp;&nbsp;</label>
+                  </div>
+                </div>
+              <div class="form-row">
+                <div class="name">Capacity</div>
+                <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="capacity16" value="16">
+                        <label class="custom-control-label" for="capacity16">16 GB &nbsp;</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="capacity32" value="32">
+                        <label class="custom-control-label" for="capacity32"> 32 GB &nbsp;</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="capacity64" value="64">
+                        <label class="custom-control-label" for="capacity64">64 GB &nbsp;</label>
+                </div>
+                <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="capacity128" value="128">
+                        <label class="custom-control-label" for="capacity128">128 GB &nbsp;</label>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="name">Detail Product</div>
+                <div class="value">
+                  <div class="input-group">
+                    <textarea
+                      class="textarea--style-6"
+                      name="DetailProduct"
+                      placeholder="Detail Product"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="name">Choose Image</div>
+                <div class="value">
+                  <div class="input-group js-input-file">
+                    <input
+                      class="input-file"
+                      type="file"
+                      name="file_cv"
+                      id="file"
+                    />
+                    <label class="label--file" for="file">Choose file</label>
+                    <span class="input-file__info">No file chosen</span>
+                  </div>
+                  <div class="label--desc">
+                    Upload your image or any other relevant file. Max file
+                    size 50 MB
+                  </div>
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="name">Description</div>
+                <div class="value">
+                  <div class="input-group">
+                    <textarea
+                      class="textarea--style-6"
+                      name="description"
+                      placeholder="Description"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="card-footer">
+            <button class="btn btn--radius-2 btn--blue-2" type="submit">
+              Send Application
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Jquery JS-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+
+    <!-- Main JS-->
+    <script src="js/global.js"></script>
+  </body>
+</html>
+<!-- end document-->
