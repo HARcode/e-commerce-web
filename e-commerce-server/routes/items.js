@@ -100,16 +100,36 @@ router.post("/filter", (req, res) => {
 
 // add
 router.post("/", (req, res) => {
-  let { vote, testimonials } = req.body;
+  let { colors, capacities } = req.body;
   let itemAdded = {
     ...req.body,
-    vote: vote || 0,
-    testimonials: testimonials || []
+    ...(colors && { colors: JSON.parse(colors) }),
+    ...(capacities && { capacities: JSON.parse(capacities) }),
+    vote: 0,
+    testimonials: []
   };
 
   Item.create(itemAdded)
     .then(item => res.json({ error: false, itemAdded: item }))
     .catch(err => res.json({ error: true, message: err }));
+});
+
+// update vote, rate, and/or testimonials of an item
+router.put("/:itemId", (req, res) => {
+  let { itemId } = req.params;
+  let { vote, rate, testimonials } = req.body;
+  let itemUpdated = {
+    vote,
+    rate,
+    ...(testimonials && { testimonials: JSON.parse(testimonials) })
+  };
+
+  Item.findOneAndUpdate({ itemId }, itemUpdated, err => {
+    if (err) res.json({ error: true, message: err });
+    else {
+      res.json({ error: false, itemId, ...itemUpdated });
+    }
+  });
 });
 
 module.exports = router;
