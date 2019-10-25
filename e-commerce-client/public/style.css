@@ -1,4 +1,6 @@
-
+html,body {
+  font-family: "Ubuntu" !important;
+}
 /* Btn span */
 .btn span.glyphicon {
   opacity: 0;

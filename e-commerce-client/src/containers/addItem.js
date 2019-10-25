@@ -61,6 +61,16 @@ export default class AddItem extends Component {
         });
     }
 
+    handleInputChange = e => {
+        let { name, value, inputMode } = e.target;
+        if (inputMode === "numeric") {
+            value = value.replace(/\D/g, '');
+            value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+            value = value && `Rp ${value}`
+        }
+        this.setState({ [name]: value })
+    }
+
     render() {
         let { colors } = this.state;
         const styles = reactCSS({
@@ -97,7 +107,7 @@ export default class AddItem extends Component {
         let forms = [
             { name: "title", label: "Title", type: "text", value: title },
             { name: "brand", label: "Brand", type: "text", value: brand },
-            { name: "price", label: "Price", type: "number", min: 0, value: price },
+            { name: "price", label: "Price", type: "text", inputMode: "numeric", min: 0, value: price },
             { name: "stock", label: "Stock", type: "number", min: 0, value: stock },
             '',
             {
@@ -113,10 +123,10 @@ export default class AddItem extends Component {
 
         let formItems = forms.map((form, i) => {
             if (i === 4) return (
-                <div className="form-row">
+                <div key={i} className="form-row">
                     <div className="name">Color</div>
                     {colors.map((color, idx) => (
-                        <div></div>
+                        <div key={idx}></div>
                     ))}
                     <div style={styles.swatch} onClick={this.handleClickColor}>
                         <div style={styles.colors[0]} />
@@ -127,13 +137,13 @@ export default class AddItem extends Component {
                     </div>}
                     <div className="align-center mx-3">
                         <button type="button" className="btn text-info bg-transparent" style={{ marginTop: "-0.35rem" }}>
-                            <i class="fa fa-plus-circle fa-2x" aria-hidden="true"></i>
+                            <i className="fa fa-plus-circle fa-2x" aria-hidden="true"></i>
                         </button>
                     </div>
                 </div>
             ); // color picker
             if (i === 7) return (
-                <div className="form-row">
+                <div key={i} className="form-row">
                     <div className="name">Choose Image</div>
                     <div className="value">
                         <div className="input-group js-input-file">
@@ -154,18 +164,18 @@ export default class AddItem extends Component {
                 </div>
             ); // file
             return (
-                <FormItem {...form} key={i} />
+                <FormItem key={i} {...form} onChange={this.handleInputChange} />
             )
         })
 
         return (
             <div className="page-wrapper bg-info p-t-45 p-b-50">
                 <div className="wrapper wrapper--w900">
-                    <div className="card card-6" style={{ maxHeight: "90vh", overflowY: "auto" }}>
+                    <div className="card card-6">
                         <div className="card-heading">
                             <h2 className="btn btn-primary col-lg-12 col-sm-12 col-md-12">Add Ads</h2>
                         </div>
-                        <div className="card-body">
+                        <div className="card-body" style={{ maxHeight: "70vh", overflowY: "auto" }}>
                             <form method="POST">
                                 {formItems}
                             </form>
