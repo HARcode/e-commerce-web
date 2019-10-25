@@ -16,7 +16,12 @@
       href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
 
     <!-- Main CSS-->
     <link href="style.css" rel="stylesheet" media="all" />
@@ -113,41 +118,93 @@
                 </div>
               </div>
               <div class="form-row">
-                  <div class="name">Color</div>
-                  <div class="custom-control custom-checkbox">
-                          <input type="checkbox" class="custom-control-input" id="merah" value="#e66465" >
-                          <label class="custom-control-label " for="merah">Merah &nbsp;&nbsp;</label>
-                  </div>
-                  <div class="custom-control custom-checkbox">
-                          <input type="checkbox" class="custom-control-input" id="biru" value="#01508c">
-                          <label class="custom-control-label " for="biru"> Biru &nbsp;&nbsp;</label>
-                  </div>
-                  <div class="custom-control custom-checkbox">
-                          <input type="checkbox" class="custom-control-input" id="putih" value="#f5f6f7">
-                          <label class="custom-control-label " for="putih">Putih &nbsp;&nbsp;</label>
-                  </div>
-                  <div class="custom-control custom-checkbox">
-                          <input type="checkbox" class="custom-control-input" id="hitam" value="#030303">
-                          <label class="custom-control-label" for="hitam">Hitam &nbsp;&nbsp;</label>
-                  </div>
+                <div class="name">Color</div>
+                <div class="btn-group" data-toggle="buttons">
+                    ​
+                                  <label class="btn btn-info active" style="background-color: chartreuse">
+                                    <input type="checkbox" name="options" id="option2" autocomplete="off" chacked>
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                  </label>
                 </div>
+                <div class="custom-control custom-checkbox">
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="biru"
+                    value="#01508c"
+                  />
+                  <label class="custom-control-label " for="biru">
+                    Biru &nbsp;&nbsp;</label
+                  >
+                </div>
+                <div class="custom-control custom-checkbox">
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="putih"
+                    value="#f5f6f7"
+                  />
+                  <label class="custom-control-label " for="putih"
+                    >Putih &nbsp;&nbsp;</label
+                  >
+                </div>
+                <div class="custom-control custom-checkbox">
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="hitam"
+                    value="#030303"
+                  />
+                  <label class="custom-control-label" for="hitam"
+                    >Hitam &nbsp;&nbsp;</label
+                  >
+                </div>
+              </div>
               <div class="form-row">
                 <div class="name">Capacity</div>
                 <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="capacity16" value="16">
-                        <label class="custom-control-label" for="capacity16">16 GB &nbsp;</label>
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="capacity16"
+                    value="16"
+                  />
+                  <label class="custom-control-label" for="capacity16"
+                    >16 GB &nbsp;</label
+                  >
                 </div>
                 <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="capacity32" value="32">
-                        <label class="custom-control-label" for="capacity32"> 32 GB &nbsp;</label>
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="capacity32"
+                    value="32"
+                  />
+                  <label class="custom-control-label" for="capacity32">
+                    32 GB &nbsp;</label
+                  >
                 </div>
                 <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="capacity64" value="64">
-                        <label class="custom-control-label" for="capacity64">64 GB &nbsp;</label>
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="capacity64"
+                    value="64"
+                  />
+                  <label class="custom-control-label" for="capacity64"
+                    >64 GB &nbsp;</label
+                  >
                 </div>
                 <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input" id="capacity128" value="128">
-                        <label class="custom-control-label" for="capacity128">128 GB &nbsp;</label>
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="capacity128"
+                    value="128"
+                  />
+                  <label class="custom-control-label" for="capacity128"
+                    >128 GB &nbsp;</label
+                  >
                 </div>
               </div>
               <div class="form-row">
@@ -176,8 +233,8 @@
                     <span class="input-file__info">No file chosen</span>
                   </div>
                   <div class="label--desc">
-                    Upload your image or any other relevant file. Max file
-                    size 50 MB
+                    Upload your image or any other relevant file. Max file size
+                    50 MB
                   </div>
                 </div>
               </div>
@@ -196,9 +253,12 @@
             </form>
           </div>
           <div class="card-footer">
-            <button class="btn btn--radius-2 btn--blue-2" type="submit">
-              Send Application
+            <button class="btn btn-primary" type="submit">
+              Add
             </button>
+            <button class="btn btn-info" type="submit">
+                Cancel
+              </button>
           </div>
         </div>
       </div>
