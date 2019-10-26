@@ -1,8 +1,6 @@
 import { request } from "../helpers/accessAPI";
-import { 
+import {
   LOAD_DETAIL,
-  LOAD_DETAIL_SUCCESS,
-  LOAD_DETAIL_FAILURE,
   LIKE_ITEM,
   LIKE_ITEM_SUCCESS,
   LIKE_ITEM_FAILURE,
@@ -10,3 +8,68 @@ import {
   BUY_ITEM_SUCCESS,
   BUY_ITEM_FAILURE
 } from "../constants/actionTypes";
+
+// LOAD ITEM DETAIL
+const loadDetailRedux = itemLoaded => ({ type: LOAD_DETAIL, itemLoaded });
+export const loadDetail = (itemId = 0) => {
+  return (dispatch, getState) => {
+    let { items } = getState();
+    let itemLoaded = [...items].filter(item => item.itemId === itemId);
+    itemLoaded = itemLoaded[0] ? itemLoaded[0] : {};
+    dispatch(loadDetailRedux(itemLoaded));
+  };
+};
+
+// LIKE ITEM
+const likeItemRedux = ({ itemId, vote }) => ({ type: LIKE_ITEM, itemId, vote });
+
+const likeItemSuccess = ({ itemId, vote }) => ({
+  type: LIKE_ITEM_SUCCESS,
+  itemId,
+  vote
+});
+
+const likeItemFailure = itemId => ({ type: LIKE_ITEM_FAILURE, itemId });
+
+export const likeItem = (liked = { itemId: 0, vote: 0 }) => {
+  // vote is already calculated at container
+  let { itemId, vote } = liked;
+  return dispatch => {
+    dispatch(likeItemRedux(liked));
+    return request
+      .put(itemId, { vote })
+      .then(result => {
+        let response = result.data;
+        if (response.error) dispatch(likeItemFailure(itemId));
+        else dispatch(likeItemSuccess(response));
+      })
+      .catch(() => dispatch(likeItemFailure(itemId)));
+  };
+};
+
+// BUY ITEM
+const buyItemRedux = ({ itemId, stock }) => ({ type: BUY_ITEM, itemId, stock });
+
+const buyItemSuccess = ({ itemId, stock }) => ({
+  type: BUY_ITEM_SUCCESS,
+  itemId,
+  stock
+});
+
+const buyItemFailure = itemId => ({ type: BUY_ITEM_FAILURE, itemId });
+
+export const buyItem = (bought = { itemId: 0, stock: 0 }) => {
+  // stock is already calculated at container
+  let { itemId, stock } = bought;
+  return dispatch => {
+    dispatch(buyItemRedux(bought));
+    return request
+      .put(itemId, { stock })
+      .then(result => {
+        let response = result.data;
+        if (response.error) dispatch(buyItemFailure(itemId));
+        else dispatch(buyItemSuccess(response));
+      })
+      .catch(() => dispatch(buyItemFailure(itemId)));
+  };
+};
