@@ -114,13 +114,16 @@ router.post("/", (req, res) => {
     .catch(err => res.json({ error: true, message: err }));
 });
 
-// update vote, rate, and/or testimonials of an item
+// update vote, rate, stock, and/or testimonials of an item
 router.put("/:itemId", (req, res) => {
   let { itemId } = req.params;
-  let { vote, rate, testimonials } = req.body;
+  // vote, rate, & stock are already calculated at front-end
+  // testimonials are already added at front-end
+  let { vote, rate, stock, testimonials } = req.body;
   let itemUpdated = {
     vote,
     rate,
+    stock,
     ...(testimonials && { testimonials: JSON.parse(testimonials) })
   };
 
