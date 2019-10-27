@@ -10,10 +10,11 @@ import {
 } from "../constants/actionTypes";
 
 // LOAD ITEM DETAIL
-const loadDetailRedux = itemLoaded => ({ type: LOAD_DETAIL, itemLoaded });
+export const loadDetailRedux = itemLoaded => ({ type: LOAD_DETAIL, itemLoaded });
 export const loadDetail = (itemId = 0) => {
   return (dispatch, getState) => {
-    let { items } = getState();
+    let { data } = getState();
+    let { items } = data;
     let itemLoaded = [...items].filter(item => item.itemId === itemId);
     itemLoaded = itemLoaded[0] ? itemLoaded[0] : {};
     dispatch(loadDetailRedux(itemLoaded));
