@@ -1,9 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AddItem from '../src/containers/addItem';
+import AddItem from './containers/addItem';
+import detail from './components/detail'
 import * as serviceWorker from './serviceWorker';
+import { Route, BrowserRouter as Router} from 'react-router-dom';
 
-ReactDOM.render(<AddItem />, document.getElementById('root'));
+
+const routing = (
+  <Router>
+    
+      
+        <Route exact path="/" component={AddItem} />
+        <Route path="/detail" component={detail} />
+      
+    
+  </Router>
+)
+
+ReactDOM.render(routing, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
