@@ -4,6 +4,7 @@ import reactCSS from "reactcss";
 import { connect } from "react-redux";
 import { SketchPicker } from "react-color";
 import { FormItem } from "../components/form";
+import { convertPrice } from "../helpers/convertPrice";
 
 Node.prototype.getParents = function(nth = 0) {
   if (nth <= 0) return this.parentElement;
@@ -94,11 +95,7 @@ export default class AddItem extends Component {
 
   handleInputChange = e => {
     let { name, value, inputMode } = e.target;
-    if (inputMode === "numeric") {
-      value = value.replace(/\D/g, "");
-      value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
-      value = value && `Rp ${value}`;
-    }
+    if (inputMode === "numeric") value = convertPrice(value);
     this.setState({ [name]: value });
   };
 

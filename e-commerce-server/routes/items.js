@@ -106,6 +106,7 @@ router.post("/", (req, res) => {
     ...(colors && { colors: JSON.parse(colors) }),
     ...(capacities && { capacities: JSON.parse(capacities) }),
     vote: 0,
+    rate: 0,
     testimonials: []
   };
 
