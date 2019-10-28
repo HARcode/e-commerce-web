@@ -2,13 +2,11 @@ import { request } from "../helpers/accessAPI";
 import {
   LOAD_DATA_SUCCESS,
   LOAD_DATA_FAILURE,
-  FILTER_DATA,
   FILTER_DATA_SUCCESS,
   FILTER_DATA_FAILURE,
-  ADD_DATA,
-  ADD_DATA_SUCCESS,
   ADD_DATA_FAILURE
 } from "../constants/actionTypes";
+import { loadDetailRedux } from "./detail";
 
 const defaultSortBy = [
   { field: "rate", asc: false },
@@ -47,13 +45,6 @@ export const loadData = (
 // END LOAD DATA
 
 // START FILTER DATA
-const filterDataRedux = (filter, { limit, page }, sortBy) => ({
-  type: FILTER_DATA,
-  filter,
-  pagination: { limit, page },
-  sortBy
-});
-
 const filterDataSuccess = (items, { numOfPages, limit, page }, sortBy) => ({
   type: FILTER_DATA_SUCCESS,
   items,
@@ -70,7 +61,6 @@ export const filterData = (
   let { sortBy, limit, page } = config;
   sortBy = JSON.parse(sortBy || JSON.stringify(defaultSortBy));
   return dispatch => {
-    dispatch(filterDataRedux(filter, { limit, page }, sortBy));
     return request
       .post("filter", { ...filter, ...config })
       .then(result => {
@@ -88,8 +78,6 @@ export const filterData = (
 // END FILTER DATA
 
 // START ADD DATA
-const addDataRedux = (item = {}) => ({ type: ADD_DATA, item });
-const addDataSuccess = (item = {}) => ({ type: ADD_DATA_SUCCESS, item });
 const addDataFailure = itemId => ({ type: ADD_DATA_FAILURE, itemId });
 
 export const addData = (item = {}) => {
@@ -101,7 +89,7 @@ export const addData = (item = {}) => {
     ...item
   };
   return dispatch => {
-    dispatch(addDataRedux(item));
+    dispatch(loadDetailRedux(item));
     /* if colors and/or capacities are arrays, then convert them to string, such that
     we can pass 'item' as 'body' to post method request. */
     const itemSent = {
@@ -117,7 +105,7 @@ export const addData = (item = {}) => {
         let response = result.data;
         let { error, itemAdded } = response;
         if (error) dispatch(addDataFailure(itemId));
-        else dispatch(addDataSuccess(itemAdded));
+        else dispatch(loadDetailRedux(itemAdded));
       })
       .catch(() => dispatch(addDataFailure(itemId)));
   };

@@ -15,7 +15,8 @@ const loadTestimonialsRedux = testimonials => ({
 
 export const loadTestimonials = (itemId = 0) => {
   return (dispatch, getState) => {
-    let { items } = getState();
+    let { data } = getState();
+    let { items } = data;
     let itemLoaded = [...items].filter(item => item.itemId === itemId);
     let testimonials = itemLoaded[0] ? itemLoaded[0].testimonials : [];
     dispatch(loadTestimonialsRedux(testimonials));
@@ -49,7 +50,8 @@ export const addTestimonial = (
 ) => {
   let { itemId, testimonial } = rated;
   return (dispatch, getState) => {
-    let { items } = getState();
+    let { data } = getState();
+    let { items } = data;
     let itemRated = [...items].filter(item => item.itemId === itemId);
     let testimonials = itemRated[0] ? itemRated[0].testimonials : [];
     testimonials = [...testimonials, testimonial];
