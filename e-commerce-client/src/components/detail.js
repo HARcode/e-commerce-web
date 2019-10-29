@@ -39,13 +39,13 @@ class detail extends Component {
                             <h4>
                                 Colour
                             </h4>
+                            <span className="fas fa-home"></span>
                             <div class="form-check">
                                 <label class="btn btn-info active">
-                                    <input type="radio" name="optradio" id="option1" autocomplete="off" chacked={true}/>
+                                    <input type="radio" name="optradio" id="option1" autocomplete="off" chacked={true} />
                                 </label>
                                 <label class="btn btn-info active">
                                     <input type="radio" name="optradio" id="option2" autocomplete="off" />
-                                    <span className="fa fa-ok"></span>
                                 </label>
                             </div>
                             <div class="form-check">
