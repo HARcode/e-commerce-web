@@ -1,19 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import AddItem from "./containers/addItem";
-import Detail from "./containers/detail";
 import { Route, Router } from "react-router-dom";
 import { Provider } from "react-redux";
 import { ConnectedRouter } from "connected-react-router";
 import store, { history } from "./configureStore";
+import ListItem from "./containers/ListItem";
+import AddItem from "./containers/addItem";
+import Detail from "./containers/detail";
 
 const routing = (
   <Provider store={store}>
     <ConnectedRouter history={history}>
       <Router history={history}>
-        <Route exact path="/" component={App} />
+        <Route exact path="/" component={ListItem} />
         <Route path="/add" component={AddItem} />
         <Route path="/detail" component={Detail} />
       </Router>
