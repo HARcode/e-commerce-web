@@ -35,12 +35,9 @@ class ListItem extends React.Component {
             </div>
           </div>
           <div className="card-body">
-            <Pagination
-              {...pagination}
-              sortBy={JSON.stringify(sortBy)}
-            />
+            <Pagination {...pagination} sortBy={JSON.stringify(sortBy)} />
             <div className="card-deck mb-3">
-              {items.map(item => (
+              {items.map((item, i) => (
                 <Item key={item.itemId} {...item} />
               ))}
             </div>

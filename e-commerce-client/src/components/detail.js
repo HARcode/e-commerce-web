@@ -57,7 +57,6 @@ class Detail extends Component {
           <div className="col-12 col-sm-7">
             <h3 className="my-3">
               <b>{detail.title}</b>
-              <br />
             </h3>
             <h6 style={{ color: "blue", textAlign: "left" }}>
               {`Brand: ${detail.brand}. (${detail.vote} votes)`}

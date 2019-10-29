@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Item = require("../models/item");
+const serverSite = "http://localhost:3001";
 
 const defaultSortBy = [
   { field: "rate", asc: false },
@@ -32,7 +33,16 @@ router.get("/", (req, res) => {
         .skip(skip)
         .limit(limit)
         .exec()
-        .then(items => res.json({ error: false, numOfPages, items }))
+        .then(items =>
+          res.json({
+            error: false,
+            numOfPages,
+            items: items.map(item => ({
+              ...item,
+              filename: serverSite + item.filename
+            }))
+          })
+        )
         .catch(err => res.json({ error: true, message: err }));
     })
     .catch(err => res.json({ error: true, message: err }));
@@ -92,7 +102,16 @@ router.post("/filter", (req, res) => {
         .skip(skip)
         .limit(limit)
         .exec()
-        .then(items => res.json({ error: false, numOfPages, items }))
+        .then(items =>
+          res.json({
+            error: false,
+            numOfPages,
+            items: items.map(item => ({
+              ...item,
+              filename: serverSite + item.filename
+            }))
+          })
+        )
         .catch(err => res.json({ error: true, message: err }));
     })
     .catch(err => res.json({ error: true, message: err }));
