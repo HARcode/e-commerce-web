@@ -15,9 +15,9 @@ class ListItem extends React.Component {
       <div
         className="container"
         style={{
-          marginTop: "10vh",
-          marginBottom: "10vh",
-          height: "80vh",
+          marginTop: "5vh",
+          marginBottom: "5vh",
+          height: "90vh",
           overflowY: "auto"
         }}
       >
@@ -35,12 +35,15 @@ class ListItem extends React.Component {
             </div>
           </div>
           <div className="card-body">
+            <Pagination
+              {...pagination}
+              sortBy={JSON.stringify(sortBy)}
+            />
             <div className="card-deck mb-3">
               {items.map(item => (
                 <Item key={item.itemId} {...item} />
               ))}
             </div>
-            <Pagination {...pagination} numOfPages={100} sortBy={JSON.stringify(sortBy)} />
           </div>
         </div>
       </div>
