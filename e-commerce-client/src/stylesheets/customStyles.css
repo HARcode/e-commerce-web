@@ -16,11 +16,11 @@ span.stars span {
   background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/747/star.svg);
 }
 
-.btn i.fa {
+.btn i.fa-check {
   opacity: 0;
 }
 
-.btn.active i.fa {
+.btn.active i.fa-check {
   opacity: 1;
 }
 
