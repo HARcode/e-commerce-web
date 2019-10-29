@@ -1,17 +1,18 @@
 import React, { Component } from "react";
 import reactCSS from "reactcss";
 // import '../../mockup/style.css'
-import { connect } from "react-redux";
 import { SketchPicker } from "react-color";
 import { FormItem } from "../components/form";
 import { convertPrice } from "../helpers/convertPrice";
+// import { Link } from 'react-router-dom';
+import '../stylesheets/style.css'
 
 Node.prototype.getParents = function(nth = 0) {
   if (nth <= 0) return this.parentElement;
   return this.getParents.call(this.parentElement, --nth);
 };
 
-export default class AddItem extends Component {
+export default class addItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -265,6 +266,9 @@ export default class AddItem extends Component {
               <button className="btn btn-info mx-2" type="submit">
                 Cancel
               </button>
+              {/* <Link to="/detail" className="btn btn-info mx-2" >
+                Detail
+              </Link> */}
             </div>
           </div>
         </div>

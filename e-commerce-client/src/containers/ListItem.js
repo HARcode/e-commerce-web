@@ -10,10 +10,11 @@ class ListItem extends React.Component {
 
   render() {
     let { items } = this.props;
-    let rates = [4.3, 4.7]
     return (
       <div className="card-deck mb-3">
-        {items.map((item, i) => <Item key={item.itemId} {...item} rate={rates[i]} />)}
+        {items.map(item => (
+          <Item key={item.itemId} {...item} />
+        ))}
       </div>
     );
   }

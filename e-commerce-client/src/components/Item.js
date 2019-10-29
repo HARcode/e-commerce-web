@@ -1,6 +1,6 @@
 import React from "react";
 import { convertPrice } from "../helpers/convertPrice";
-import "../stylesheets/star.css";
+import "../stylesheets/customStyles.css";
 
 export default function Item(props) {
   let {
@@ -15,13 +15,13 @@ export default function Item(props) {
   } = props;
   return (
     <div
-      className="col-12 col-sm-3 flex-column d-flex"
+      className="col-12 col-sm-3 flex-column d-flex card-xs"
       style={{ width: "25%" }}
     >
-      <div className="card card-xs" style={{ width: "100%", height: "40rem" }}>
+      <div className="card" style={{ width: "100%", height: "40rem" }}>
         <div
           className="d-flex align-items-center"
-          style={{ width: "100%", height: "20rem" }}
+          style={{ width: "100%", height: "25rem" }}
         >
           <img src={filename} className="card-img-top my-auto" alt="..." />
         </div>
@@ -30,17 +30,24 @@ export default function Item(props) {
             <div className="col-12 card-title h4">
               <b>{title}</b>
             </div>
-            <div className="col-6 text-left">
+            <div className="d-flex col-auto text-left align-self-center pr-0">
               <span className="stars">
-                <span style={{ width: `${1.2 * rate}rem` }} />
+                <span style={{ width: `${rate}rem` }} />
               </span>
             </div>
-            <div className="col-6 text-right">
-              (<i className="fa fa-user"></i> {testimonials.length})
+
+            <div className="d-flex col-6 text-right align-self-center pl-0">
+              <div className="row justify-content-end">
+                <div className="col-auto p-0">{rate}</div>
+                <div className="col-auto pl-1 pr-0">
+                  (<i className="fa fa-user"></i>{" "}
+                  {convertPrice(testimonials.length, "")})
+                </div>
+              </div>
             </div>
             <div
-              className="col-12"
-              style={{ maxHeight: "5rem", overflowY: "auto" }}
+              className="col-12 my-2"
+              style={{ maxHeight: "4rem", overflowY: "auto" }}
             >
               {description}
             </div>
@@ -48,9 +55,9 @@ export default function Item(props) {
           </div>
           <button
             className="btn btn-primary mt-auto"
-            // style={{ alignSelf: "right" }}
             onClick={() => showDetail(itemId)}
           >
+            <i className="fa fa-info-circle mx-2"></i>
             Item detail
           </button>
         </div>

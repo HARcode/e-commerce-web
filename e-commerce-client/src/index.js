@@ -2,8 +2,26 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
+import AddItem from "./containers/addItem";
+import Detail from "./containers/detail";
+import { Route, Router } from "react-router-dom";
+import { Provider } from "react-redux";
+import { ConnectedRouter } from "connected-react-router";
+import store, { history } from "./configureStore";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+const routing = (
+  <Provider store={store}>
+    <ConnectedRouter history={history}>
+      <Router history={history}>
+        <Route exact path="/" component={App} />
+        <Route path="/add" component={AddItem} />
+        <Route path="/detail" component={Detail} />
+      </Router>
+    </ConnectedRouter>
+  </Provider>
+);
+
+ReactDOM.render(routing, document.getElementById("root"));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
