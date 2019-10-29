@@ -1,3 +1,4 @@
+import { push } from "connected-react-router";
 import { request } from "../helpers/accessAPI";
 import {
   LOAD_DATA_SUCCESS,
@@ -29,15 +30,30 @@ export const loadData = (
 ) => {
   let { sortBy, limit, page } = config.headers;
   sortBy = JSON.parse(sortBy || JSON.stringify(defaultSortBy));
-  return dispatch => {
+  return (dispatch, getState) => {
+    let { router } = getState();
     return request
       .get("", config)
       .then(result => {
         let response = result.data;
         let { error, numOfPages, items } = response;
         if (error) dispatch(loadDataFailure());
-        else
+        else {
           dispatch(loadDataSuccess(items, { limit, page, numOfPages }, sortBy));
+          localStorage.setItem(
+            "data",
+            JSON.stringify(
+              {
+                items,
+                pagination: { limit, page, numOfPages },
+                sortBy
+              },
+              null,
+              5
+            )
+          );
+          if (router.location.pathname !== "/") dispatch(push("/"));
+        }
       })
       .catch(() => dispatch(loadDataFailure()));
   };

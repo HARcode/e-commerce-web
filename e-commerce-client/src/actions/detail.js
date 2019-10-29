@@ -1,3 +1,4 @@
+import { push } from "connected-react-router";
 import { request } from "../helpers/accessAPI";
 import {
   LOAD_DETAIL,
@@ -10,14 +11,26 @@ import {
 } from "../constants/actionTypes";
 
 // LOAD ITEM DETAIL
-export const loadDetailRedux = itemLoaded => ({ type: LOAD_DETAIL, itemLoaded });
-export const loadDetail = (itemId = 0) => {
+export const loadDetailRedux = itemLoaded => ({
+  type: LOAD_DETAIL,
+  itemLoaded
+});
+export const loadDetail = itemId => {
   return (dispatch, getState) => {
-    let { data } = getState();
+    let { data, router } = getState();
     let { items } = data;
+
+    if (itemId) localStorage.setItem("itemId", itemId);
+    else itemId = Number(localStorage.getItem("itemId"));
+
+    if (Object.values(items).length === 0)
+      items = JSON.parse(localStorage.getItem("data")).items;
+
     let itemLoaded = [...items].filter(item => item.itemId === itemId);
     itemLoaded = itemLoaded[0] ? itemLoaded[0] : {};
+
     dispatch(loadDetailRedux(itemLoaded));
+    if (router.location.pathname !== "/detail") dispatch(push("/detail"));
   };
 };
 

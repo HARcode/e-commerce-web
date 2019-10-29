@@ -3,6 +3,7 @@ import reactCSS from "reactcss";
 // import '../../mockup/style.css'
 import { SketchPicker } from "react-color";
 import { FormItem } from "../components/form";
+import { convertPrice } from "../helpers/convertPrice";
 // import { Link } from 'react-router-dom';
 import '../stylesheets/style.css'
 
@@ -95,11 +96,7 @@ export default class addItem extends Component {
 
   handleInputChange = e => {
     let { name, value, inputMode } = e.target;
-    if (inputMode === "numeric") {
-      value = value.replace(/\D/g, "");
-      value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
-      value = value && `Rp ${value}`;
-    }
+    if (inputMode === "numeric") value = convertPrice(value);
     this.setState({ [name]: value });
   };
 

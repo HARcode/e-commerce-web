@@ -1,24 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import ListItem from "./containers/ListItem";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
+    <div
+      className="container"
+      style={{ marginTop: "10vh", marginBottom: "10vh", height: "80vh" }}
+    >
+      <div className="row my-5 mx-3">
+        <a role="button" href="/add" className="btn btn-primary">
+          <i className="fa fa-plus mx-2"></i>Add
         </a>
-      </header>
+      </div>
+      <ListItem />
     </div>
   );
 }
