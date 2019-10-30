@@ -33,6 +33,7 @@ export default class Upload extends Component {
                       border: "1px solid black",
                       margin: "10px 5px 0 0"
                     }}
+                    alt="Uploaded file"
                   />
                 </span>
               )
