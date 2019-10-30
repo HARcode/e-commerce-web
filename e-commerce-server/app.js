@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const fileUpload = require("express-fileupload");
 const itemsRouter = require("./routes/items");
 
 mongoose
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
+app.use(fileUpload({ limits: { fileSize: 3 * 1024 * 1024 } }));
 
 app.use("/api/items", itemsRouter);
 
