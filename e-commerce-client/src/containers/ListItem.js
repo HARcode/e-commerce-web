@@ -17,12 +17,11 @@ class ListItem extends React.Component {
         style={{
           marginTop: "5vh",
           marginBottom: "5vh",
-          height: "90vh",
-          overflowY: "auto"
+          maxHeight: "90vh"
         }}
       >
         <div className="card">
-          <div className="card-header">
+          <div className="card-header bg-info text-light">
             <div className="row justify-content-between mx-2">
               <h3>
                 <b>Welcome to HARcode E-Commerce</b>
@@ -34,7 +33,13 @@ class ListItem extends React.Component {
               </div>
             </div>
           </div>
-          <div className="card-body">
+          <div
+            className="card-body"
+            style={{
+              maxHeight: "80vh",
+              overflowY: "auto"
+            }}
+          >
             <Pagination {...pagination} sortBy={JSON.stringify(sortBy)} />
             <div className="card-deck mb-3">
               {items.map((item, i) => (
