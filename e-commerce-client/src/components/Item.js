@@ -21,7 +21,7 @@ export default function Item(props) {
       <div className="card" style={{ width: "100%", height: "40rem" }}>
         <div
           className="d-flex align-items-center"
-          style={{ width: "100%", height: "25rem" }}
+          style={{ width: "auto", height: "25rem" }}
         >
           <img src={filename} className="card-img-top my-auto" alt="..." />
         </div>
@@ -32,13 +32,13 @@ export default function Item(props) {
             </div>
             <div className="d-flex col-auto text-left align-self-center pr-0">
               <span className="stars">
-                <span style={{ width: `${rate}rem` }} />
+                <span style={{ width: `${Math.min(rate,5)}rem` }} />
               </span>
             </div>
 
             <div className="d-flex col-6 text-right align-self-center pl-0">
               <div className="row justify-content-end">
-                <div className="col-auto p-0">{rate}</div>
+                <div className="col-auto p-0">{Math.min(rate,5)}</div>
                 <div className="col-auto pl-1 pr-0">
                   (<i className="fa fa-user"></i>{" "}
                   {convertPrice(testimonials.length, "")})

@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const Item = require("../models/item");
+const path = require("path");
+const serverSite = "http://localhost:3001";
 
 const defaultSortBy = [
   { field: "rate", asc: false },
@@ -32,7 +34,16 @@ router.get("/", (req, res) => {
         .skip(skip)
         .limit(limit)
         .exec()
-        .then(items => res.json({ error: false, numOfPages, items }))
+        .then(items =>
+          res.json({
+            error: false,
+            numOfPages,
+            items: items.map(item => ({
+              ...item,
+              filename: serverSite + item.filename
+            }))
+          })
+        )
         .catch(err => res.json({ error: true, message: err }));
     })
     .catch(err => res.json({ error: true, message: err }));
@@ -48,6 +59,7 @@ router.post("/filter", (req, res) => {
     minRate,
     maxRate,
     capacities,
+    sizes,
     sortBy,
     page,
     limit
@@ -70,6 +82,9 @@ router.post("/filter", (req, res) => {
     }),
     ...(capacities && {
       capacities: { $elemMatch: { $in: JSON.parse(capacities) } }
+    }),
+    ...(sizes && {
+      sizes: { $elemMatch: { $in: JSON.parse(sizes) } }
     })
   };
 
@@ -92,7 +107,16 @@ router.post("/filter", (req, res) => {
         .skip(skip)
         .limit(limit)
         .exec()
-        .then(items => res.json({ error: false, numOfPages, items }))
+        .then(items =>
+          res.json({
+            error: false,
+            numOfPages,
+            items: items.map(item => ({
+              ...item,
+              filename: serverSite + item.filename
+            }))
+          })
+        )
         .catch(err => res.json({ error: true, message: err }));
     })
     .catch(err => res.json({ error: true, message: err }));
@@ -100,47 +124,38 @@ router.post("/filter", (req, res) => {
 
 // add
 router.post("/", (req, res) => {
-  let {
-    itemId,
-    category,
-    title,
-    price,
-    rate,
-    description,
-    detail,
-    brand,
-    colors,
-    stock,
-    capacities,
-    filename,
-    vote,
-    testimonials
+  let { colors, capacities, sizes, stock, price, itemId } = req.body;
+  let { file } = req.files;
+  let filename = `${itemId}-${file.name}`;
+  file.mv(path.join(__dirname, "..", "public", "images", filename), err => {
+    if (err) console.log(err);
+    else {
+      let itemAdded = {
+        ...req.body,
+        ...(colors && { colors: JSON.parse(colors) }),
+        ...(capacities && {
+          capacities: JSON.parse(capacities).map(cap => `${cap} GB`)
+        }),
+        ...(sizes && { sizes: JSON.parse(sizes) }),
+        itemId: Number(itemId),
+        stock: Number(stock),
+        price: Number(price),
+        filename: "/images/" + filename,
+        vote: 0,
+        rate: 0,
+        testimonials: []
+      };
 
-  } = req.body;
-
-
-  let itemAdded =
-    new Item({
-      itemId,
-      category,
-      title,
-      price,
-      rate,
-      description,
-      detail,
-      brand,
-      colors,
-      stock,
-      capacities,
-      filename,
-      vote,
-      testimonials
-    })
-    ;
-
-  itemAdded.save()
-    .then(item => res.json({ error: false, itemAdded: item }))
-    .catch(err => res.json({ error: true, message: err }));
+      Item.create(itemAdded)
+        .then(item =>
+          res.json({
+            error: false,
+            itemAdded: { ...item, filename: serverSite + item.filename }
+          })
+        )
+        .catch(err => res.json({ error: true, message: err }));
+    }
+  });
 });
 
 // update vote, rate, stock, and/or testimonials of an item

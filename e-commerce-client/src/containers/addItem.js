@@ -1,45 +1,37 @@
 import React, { Component } from "react";
 import reactCSS from "reactcss";
-// import '../../mockup/style.css'
+import { connect } from "react-redux";
 import { SketchPicker } from "react-color";
+import { addData } from "../actions/data";
 import { FormItem } from "../components/form";
 import { convertPrice } from "../helpers/convertPrice";
-// import { Link } from 'react-router-dom';
-import '../stylesheets/style.css'
+import "../stylesheets/style.css";
+import Upload from "../components/Upload";
 
 Node.prototype.getParents = function(nth = 0) {
   if (nth <= 0) return this.parentElement;
   return this.getParents.call(this.parentElement, --nth);
 };
 
-export default class addItem extends Component {
+class AddItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      category: "",
       title: "",
       price: "",
-      rate: "",
       description: "",
       detail: "",
       brand: "",
       colors: ["#000000"],
-      red: "",
-      blue: "",
-      white: "",
-      black: "",
       stock: "",
       capacities: [],
-      GB16: "",
-      GB32: "",
-      GB64: "",
-      GB128: "",
-      filename: "",
-      added: false,
+      sizes: [],
+      file: {},
       displayColorPicker: [false]
     };
-    //
-    // this.handleCheckbook = this.handleCheckbook.bind(this)
   }
+
   handleClickColor = e => {
     let { id } = e.target;
     id = Number(id.split("click")[1]);
@@ -48,7 +40,6 @@ export default class addItem extends Component {
         i === id ? !disp : disp
       )
     }));
-    // this.setState({ displayColorPicker: [!this.state.displayColorPicker[0]] });
   };
 
   handleCloseColor = e => {
@@ -62,7 +53,6 @@ export default class addItem extends Component {
   };
 
   handleChangeColor = (color, e) => {
-    e.persist();
     let target = e.target;
     if (target) {
       let { id } = target.getParents(5);
@@ -75,29 +65,102 @@ export default class addItem extends Component {
 
   addColor = e => {
     e.preventDefault();
-    if (this.state.colors.length === 7) e.target.style.display = "none";
-    else
-      this.setState(state => ({
-        colors: [...state.colors, "#000000"],
-        displayColorPicker: [...state.displayColorPicker, false]
-      }));
+    this.setState(state => ({
+      colors: [...state.colors, "#000000"],
+      displayColorPicker: [...state.displayColorPicker, false]
+    }));
   };
 
-  handleCheckbook(event) {
-    //Checkbox
-    const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
+  delColor = e => {
+    e.preventDefault();
+    this.setState(state => ({
+      colors: state.colors.slice(0, state.colors.length - 1),
+      displayColorPicker: state.displayColorPicker.slice(
+        0,
+        state.displayColorPicker.length - 1
+      )
+    }));
+  };
 
-    this.setState({
-      [name]: value
-    });
-  }
+  handleCheckbox = (event, name) => {
+    const target = event.target;
+    if (target.checked) {
+      this.setState(state => ({
+        [name]: [...state[name], target.value]
+      }));
+    } else {
+      this.setState(state => ({
+        [name]: state[name].filter(val => val !== target.value)
+      }));
+    }
+  };
+
+  handleRadio = (event, name, value) => {
+    if (event.target.checked) {
+      let newState;
+      if (value === "Smartphone")
+        newState = { capacities: [], sizes: undefined };
+      else if (value === "Fashion")
+        newState = { capacities: undefined, sizes: [] };
+      this.setState({ [name]: value, ...newState });
+    }
+  };
 
   handleInputChange = e => {
     let { name, value, inputMode } = e.target;
     if (inputMode === "numeric") value = convertPrice(value);
     this.setState({ [name]: value });
+  };
+
+  handleFileChange = file => {
+    this.setState({ file });
+  };
+
+  selectOnChange = type => {
+    switch (type) {
+      case "checkbox":
+        return this.handleCheckbox;
+      case "radio":
+        return this.handleRadio;
+      default:
+        return this.handleInputChange;
+    }
+  };
+
+  selectSpecification = category => {
+    switch (category) {
+      case "Smartphone":
+        return {
+          name: "capacities",
+          label: "Capacity",
+          type: "checkbox",
+          values: [16, 32, 64, 128, 256, 512],
+          options: [16, 32, 64, 128, 256, 512].map(x => `${x} GB`),
+          ids: [16, 32, 64, 128, 256, 512].map(x => `capacity${x}`),
+          checked: this.state.capacities
+        };
+      case "Fashion":
+        return {
+          name: "sizes",
+          label: "Sizes",
+          type: "checkbox",
+          values: ["XS", "S", "M", "L", "XL", "XXL", "XXXL"],
+          options: ["XS", "S", "M", "L", "XL", "XXL", "XXXL"],
+          ids: ["XS", "S", "M", "L", "XL", "XXL", "XXXL"].map(x => `sizes${x}`),
+          checked: this.state.sizes
+        };
+      default:
+        return {};
+    }
+  };
+
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.addData({
+      ...this.state,
+      price: Number(this.state.price.replace(/\D/g, "")),
+      displayColorPicker: undefined
+    });
   };
 
   render() {
@@ -132,10 +195,33 @@ export default class addItem extends Component {
       }
     });
 
-    let { title, brand, price, stock, detail, description } = this.state;
+    let {
+      category,
+      title,
+      brand,
+      price,
+      stock,
+      detail,
+      description
+    } = this.state;
+
     let forms = [
+      {
+        name: "category",
+        label: "Category",
+        type: "radio",
+        active: category,
+        values: ["Smartphone", "Fashion"]
+      },
       { name: "title", label: "Title", type: "text", value: title },
       { name: "brand", label: "Brand", type: "text", value: brand },
+      {
+        name: "description",
+        label: "Description",
+        type: "textarea",
+        rows: 2,
+        value: description
+      },
       {
         name: "price",
         label: "Price",
@@ -145,32 +231,20 @@ export default class addItem extends Component {
         value: price
       },
       { name: "stock", label: "Stock", type: "number", min: 0, value: stock },
-      "",
-      {
-        name: "capacity",
-        label: "Capacity",
-        type: "checkbox",
-        values: [16, 32, 64, 128],
-        options: [16, 32, 64, 128].map(x => `${x} GB`),
-        ids: [16, 32, 64, 128].map(x => `capacity${x}`)
-      },
+      { type: "color" },
+      this.selectSpecification(category),
       {
         name: "detail",
         label: "Detail Product",
         type: "textarea",
+        rows: 10,
         value: detail
       },
-      "",
-      {
-        name: "description",
-        label: "Description",
-        type: "textarea",
-        value: description
-      }
+      { type: "file" }
     ];
 
     let formItems = forms.map((form, i) => {
-      if (i === 4)
+      if (form.type === "color")
         return (
           <div key={i} className="form-row row">
             <div className="name">Color</div>
@@ -204,42 +278,37 @@ export default class addItem extends Component {
                 )}
               </div>
             ))}
-            <div style={{ marginTop: "0.15rem" }}>
-              <button
-                type="button"
-                className="btn text-info bg-transparent"
-                onClick={this.addColor}
-              >
-                <i className="fa fa-plus-circle fa-2x" aria-hidden="true"></i>
-              </button>
+            <div style={{ marginTop: "-0.1rem" }}>
+              {colors.length < 8 && (
+                <button
+                  type="button"
+                  className="btn text-info bg-transparent"
+                  onClick={this.addColor}
+                >
+                  <i className="fa fa-plus-circle fa-2x"></i>
+                </button>
+              )}
+              {colors.length > 1 && (
+                <button
+                  type="button"
+                  className="btn text-danger bg-transparent"
+                  onClick={this.delColor}
+                >
+                  <i className="fa fa-minus-circle fa-2x"></i>
+                </button>
+              )}
             </div>
           </div>
         ); // color picker
-      if (i === 7)
+      if (form.type === "file")
         return (
           <div key={i} className="form-row">
-            <div className="name">Choose Image</div>
-            <div className="value">
-              <div className="input-group js-input-file">
-                <input
-                  className="input-file"
-                  type="file"
-                  name="filename"
-                  id="file"
-                />
-                <label className="label--file" htmlFor="file">
-                  Choose file
-                </label>
-                <span className="input-file__info">No file chosen</span>
-              </div>
-              <div className="label--desc">
-                Upload your image or any other relevant file. Max file size 50
-                MB
-              </div>
-            </div>
+            <Upload onFileChange={this.handleFileChange} />
           </div>
         ); // file
-      return <FormItem key={i} {...form} onChange={this.handleInputChange} />;
+      return (
+        <FormItem key={i} {...form} onChange={this.selectOnChange(form.type)} />
+      );
     });
 
     return (
@@ -255,7 +324,11 @@ export default class addItem extends Component {
               className="card-body"
               style={{ maxHeight: "70vh", overflowY: "auto" }}
             >
-              <form method="POST" id="add">
+              <form
+                encType="multipart/form-data"
+                id="add"
+                onSubmit={this.handleSubmit}
+              >
                 {formItems}
               </form>
             </div>
@@ -263,12 +336,9 @@ export default class addItem extends Component {
               <button className="btn btn-primary" form="add" type="submit">
                 Add
               </button>
-              <button className="btn btn-info mx-2" type="submit">
+              <button className="btn btn-info mx-2" type="button">
                 Cancel
               </button>
-              {/* <Link to="/detail" className="btn btn-info mx-2" >
-                Detail
-              </Link> */}
             </div>
           </div>
         </div>
@@ -276,3 +346,12 @@ export default class addItem extends Component {
     );
   }
 }
+
+const mapDispatchToProps = dispatch => ({
+  addData: item => dispatch(addData(item))
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(AddItem);

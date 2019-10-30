@@ -2,7 +2,8 @@ import {
   LOAD_DATA_SUCCESS,
   LOAD_DATA_FAILURE,
   FILTER_DATA_SUCCESS,
-  FILTER_DATA_FAILURE
+  FILTER_DATA_FAILURE,
+  ADD_DATA
 } from "../constants/actionTypes";
 
 const defaultSortBy = [
@@ -19,7 +20,7 @@ export default function data(
   },
   action
 ) {
-  let { type, items, pagination, sortBy } = action;
+  let { type, items, pagination, sortBy, item } = action;
   switch (type) {
     case LOAD_DATA_SUCCESS:
     case FILTER_DATA_SUCCESS:
@@ -27,6 +28,12 @@ export default function data(
         items: items.map(item => ({ ...item, sent: true })),
         pagination,
         sortBy
+      };
+
+    case ADD_DATA:
+      return {
+        ...state,
+        items: [...state.items, { ...item, sent: true }]
       };
 
     case LOAD_DATA_FAILURE:

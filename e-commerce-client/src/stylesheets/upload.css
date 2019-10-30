@@ -1,0 +1,69 @@
+/* source: https://malcoded.com/posts/react-file-upload/ */
+
+.Upload {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: flex-start;
+  text-align: left;
+  overflow: hidden;
+}
+
+.Content {
+  /* display: flex; */
+  /* flex-direction: row; */
+  padding-top: 16px;
+  box-sizing: border-box;
+  width: 100%;
+  float: right
+}
+
+.Files {
+  align-items: center;
+  justify-items: center;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.Actions {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  align-items: flex-end;
+  flex-direction: column;
+  margin-top: 32px;
+}
+
+.Title {
+  margin-bottom: 32px;
+  float: left;
+}
+
+.Filename {
+  margin-bottom: 8px;
+  font-size: 1rem;
+  color: #555;
+}
+
+.Row {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  height: 50px;
+  padding: 8px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.CheckIcon {
+  opacity: 0.5;
+  margin-left: 32px;
+}
+
+.ProgressWrapper {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+}
