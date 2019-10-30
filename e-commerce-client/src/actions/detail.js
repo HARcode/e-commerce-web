@@ -11,10 +11,11 @@ import {
 } from "../constants/actionTypes";
 
 // LOAD ITEM DETAIL
-export const loadDetailRedux = itemLoaded => ({
+const loadDetailRedux = itemLoaded => ({
   type: LOAD_DETAIL,
   itemLoaded
 });
+
 export const loadDetail = itemId => {
   return (dispatch, getState) => {
     let { data, router } = getState();
