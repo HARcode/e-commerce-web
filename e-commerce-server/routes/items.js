@@ -100,17 +100,45 @@ router.post("/filter", (req, res) => {
 
 // add
 router.post("/", (req, res) => {
-  let { colors, capacities } = req.body;
-  let itemAdded = {
-    ...req.body,
-    ...(colors && { colors: JSON.parse(colors) }),
-    ...(capacities && { capacities: JSON.parse(capacities) }),
-    vote: 0,
-    rate: 0,
-    testimonials: []
-  };
+  let {
+    itemId,
+    category,
+    title,
+    price,
+    rate,
+    description,
+    detail,
+    brand,
+    colors,
+    stock,
+    capacities,
+    filename,
+    vote,
+    testimonials
 
-  Item.create(itemAdded)
+  } = req.body;
+
+
+  let itemAdded =
+    new Item({
+      itemId,
+      category,
+      title,
+      price,
+      rate,
+      description,
+      detail,
+      brand,
+      colors,
+      stock,
+      capacities,
+      filename,
+      vote,
+      testimonials
+    })
+    ;
+
+  itemAdded.save()
     .then(item => res.json({ error: false, itemAdded: item }))
     .catch(err => res.json({ error: true, message: err }));
 });
@@ -122,9 +150,9 @@ router.put("/:itemId", (req, res) => {
   // testimonials are already added at front-end
   let { vote, rate, stock, testimonials } = req.body;
   let itemUpdated = {
-    vote,
-    rate,
-    stock,
+    ...(vote && { vote }),
+    ...(rate && { rate }),
+    ...(stock && { stock }),
     ...(testimonials && { testimonials: JSON.parse(testimonials) })
   };
 

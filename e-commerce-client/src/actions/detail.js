@@ -77,10 +77,14 @@ export const buyItem = (bought = { itemId: 0, stock: 0 }) => {
   let { itemId, stock } = bought;
   return dispatch => {
     dispatch(buyItemRedux(bought));
+    console.log(bought);
+
     return request
-      .put(itemId, { stock })
+      .put(itemId.toString(), { stock })
       .then(result => {
         let response = result.data;
+        console.log({ response });
+
         if (response.error) dispatch(buyItemFailure(itemId));
         else dispatch(buyItemSuccess(response));
       })
