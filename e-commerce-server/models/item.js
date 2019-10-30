@@ -12,6 +12,7 @@ const itemSchema = new mongoose.Schema({
   colors: [String],
   stock: Number,
   capacities: [String],
+  sizes: [String],
   filename: String,
   vote: Number,
   testimonials: [{}]
