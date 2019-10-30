@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Item = require("../models/item");
+const path = require("path");
 const serverSite = "http://localhost:3001";
 
 const defaultSortBy = [
@@ -58,6 +59,7 @@ router.post("/filter", (req, res) => {
     minRate,
     maxRate,
     capacities,
+    sizes,
     sortBy,
     page,
     limit
@@ -80,6 +82,9 @@ router.post("/filter", (req, res) => {
     }),
     ...(capacities && {
       capacities: { $elemMatch: { $in: JSON.parse(capacities) } }
+    }),
+    ...(sizes && {
+      sizes: { $elemMatch: { $in: JSON.parse(sizes) } }
     })
   };
 
@@ -119,19 +124,38 @@ router.post("/filter", (req, res) => {
 
 // add
 router.post("/", (req, res) => {
-  let { colors, capacities } = req.body;
-  let itemAdded = {
-    ...req.body,
-    ...(colors && { colors: JSON.parse(colors) }),
-    ...(capacities && { capacities: JSON.parse(capacities) }),
-    vote: 0,
-    rate: 0,
-    testimonials: []
-  };
+  let { colors, capacities, sizes, stock, price, itemId } = req.body;
+  let { file } = req.files;
+  let filename = `${itemId}-${file.name}`;
+  file.mv(path.join(__dirname, "..", "public", "images", filename), err => {
+    if (err) console.log(err);
+    else {
+      let itemAdded = {
+        ...req.body,
+        ...(colors && { colors: JSON.parse(colors) }),
+        ...(capacities && {
+          capacities: JSON.parse(capacities).map(cap => `${cap} GB`)
+        }),
+        ...(sizes && { sizes: JSON.parse(sizes) }),
+        itemId: Number(itemId),
+        stock: Number(stock),
+        price: Number(price),
+        filename: "/images/" + filename,
+        vote: 0,
+        rate: 0,
+        testimonials: []
+      };
 
-  Item.create(itemAdded)
-    .then(item => res.json({ error: false, itemAdded: item }))
-    .catch(err => res.json({ error: true, message: err }));
+      Item.create(itemAdded)
+        .then(item =>
+          res.json({
+            error: false,
+            itemAdded: { ...item, filename: serverSite + item.filename }
+          })
+        )
+        .catch(err => res.json({ error: true, message: err }));
+    }
+  });
 });
 
 // update vote, rate, stock, and/or testimonials of an item
@@ -141,9 +165,9 @@ router.put("/:itemId", (req, res) => {
   // testimonials are already added at front-end
   let { vote, rate, stock, testimonials } = req.body;
   let itemUpdated = {
-    vote,
-    rate,
-    stock,
+    ...(vote && { vote }),
+    ...(rate && { rate }),
+    ...(stock && { stock }),
     ...(testimonials && { testimonials: JSON.parse(testimonials) })
   };
 
