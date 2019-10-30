@@ -21,7 +21,7 @@ export default function Item(props) {
       <div className="card" style={{ width: "100%", height: "40rem" }}>
         <div
           className="d-flex align-items-center"
-          style={{ width: "100%", height: "25rem" }}
+          style={{ width: "auto", height: "25rem" }}
         >
           <img src={filename} className="card-img-top my-auto" alt="..." />
         </div>
