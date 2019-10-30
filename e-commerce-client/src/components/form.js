@@ -69,7 +69,7 @@ export function FormItem(props) {
               id={props.ids[idx]}
               value={value}
               checked={props.checked.includes(value.toString())}
-              onChange={onChange}
+              onChange={e => onChange(e, name)}
             />
             <label className="custom-control-label" htmlFor={props.ids[idx]}>
               {props.options[idx]} &nbsp;
@@ -78,4 +78,30 @@ export function FormItem(props) {
         ))}
       </div>
     );
+  else if (type === "radio")
+    return (
+      <div className="form-row">
+        <div className="name">{label}</div>
+        <div className="btn-group btn-group-toggle my-1" data-toggle="buttons">
+          {props.values.map(value => (
+            <label
+              key={value}
+              className={`btn btn-secondary text-white mx-1 ${
+                value === props.active ? "active" : ""
+              }`}
+            >
+              <input
+                type="radio"
+                name="options"
+                checked={value === props.active}
+                onChange={e => onChange(e, name, value)}
+              />
+              {value} &nbsp;
+              <i className="fa fa-check"></i>
+            </label>
+          ))}
+        </div>
+      </div>
+    );
+  return <></>;
 }
