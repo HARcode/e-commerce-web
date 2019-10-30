@@ -5,9 +5,10 @@ import {
   LOAD_DATA_FAILURE,
   FILTER_DATA_SUCCESS,
   FILTER_DATA_FAILURE,
+  ADD_DATA,
   ADD_DATA_FAILURE
 } from "../constants/actionTypes";
-import { loadDetailRedux } from "./detail";
+import { loadDetail } from "./detail";
 
 const defaultSortBy = [
   { field: "rate", asc: false },
@@ -94,34 +95,51 @@ export const filterData = (
 // END FILTER DATA
 
 // START ADD DATA
+const addDataRedux = item => ({ type: ADD_DATA, item });
 const addDataFailure = itemId => ({ type: ADD_DATA_FAILURE, itemId });
 
 export const addData = (item = {}) => {
-  let { colors, capacities } = item;
+  let { colors, capacities, sizes, file } = item;
   let itemId = Date.now();
+  let filename = file.name;
   // Assign itemId as property of 'item'
   item = {
     itemId,
     ...item
   };
   return dispatch => {
-    dispatch(loadDetailRedux(item));
-    /* if colors and/or capacities are arrays, then convert them to string, such that
+    dispatch(
+      addDataRedux({
+        ...item,
+        filename: `http://localhost:3001/images/${itemId}-${filename}`,
+        file: undefined
+      })
+    );
+    /* if colors, sizes, and/or capacities are arrays, then convert them to string, such that
     we can pass 'item' as 'body' to post method request. */
-    const itemSent = {
+    let itemSent = {
       ...item,
       ...(colors instanceof Array && { colors: JSON.stringify(colors) }),
       ...(capacities instanceof Array && {
         capacities: JSON.stringify(capacities)
-      })
+      }),
+      ...(sizes instanceof Array && { sizes: JSON.stringify(sizes) })
     };
+
+    const formData = new FormData();
+    Object.keys(itemSent).forEach(key => {
+      if (itemSent[key]) formData.append(key, itemSent[key]);
+    });
+
     return request
-      .post("", itemSent)
+      .post("", formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+      })
       .then(result => {
         let response = result.data;
-        let { error, itemAdded } = response;
+        let { error } = response;
         if (error) dispatch(addDataFailure(itemId));
-        else dispatch(loadDetailRedux(itemAdded));
+        else dispatch(loadDetail(itemId));
       })
       .catch(() => dispatch(addDataFailure(itemId)));
   };
