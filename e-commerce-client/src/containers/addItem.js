@@ -3,10 +3,10 @@ import reactCSS from "reactcss";
 import { connect } from "react-redux";
 import { SketchPicker } from "react-color";
 import { addData } from "../actions/data";
-import { FormItem } from "../components/form";
+import { FormItem } from "../components/form-add/form";
 import { convertPrice } from "../helpers/convertPrice";
 import "../stylesheets/style.css";
-import Upload from "../components/Upload";
+import Upload from "../components/form-add/Upload";
 
 Node.prototype.getParents = function(nth = 0) {
   if (nth <= 0) return this.parentElement;
