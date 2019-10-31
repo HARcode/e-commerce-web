@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../stylesheets/dropzone.css";
+import "../../stylesheets/dropzone.css";
 
 // adapted from: https://malcoded.com/posts/react-dropzone/
 export default class Dropzone extends Component {

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Swal from "sweetalert2";
-import "../stylesheets/upload.css";
-import "../stylesheets/style.css";
+import "../../stylesheets/upload.css";
+import "../../stylesheets/style.css";
 import Dropzone from "./Dropzone";
 
 // source: https://malcoded.com/posts/react-file-upload/
