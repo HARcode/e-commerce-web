@@ -8,7 +8,7 @@ import "../stylesheets/customStyles.css";
 export default class Detail extends Component {
     constructor(props) {
         super(props);
-        this.state = { color: null, capacity: null, clicks: 0, show: true, vote: 0 };
+        this.state = { color: null, capacity: null, clicks: 0, show: true, vote: 0, addition: 0 };
 
     }
 
@@ -70,15 +70,22 @@ export default class Detail extends Component {
     ButtonLike = (e) => {
         e.preventDefault()
         let getVote = this.props.detail.vote
+        let likePlus = this.state.vote
         this.setState((state, props) => {
 
             console.log('stateVote', this.state.vote);
+            console.log('thisProps > ', getVote);
+
+
             if (this.state.vote > 0) {
                 this.setState({ vote: 0 })
                 console.log('true');
 
             } else {
-                console.log('false');
+                let addition = likePlus + getVote;
+                this.setState({ addition: addition })
+
+                console.log('false >', addition);
 
             }
 
@@ -122,6 +129,7 @@ export default class Detail extends Component {
                                 Detail
                             </b>
                             {this.state.vote}
+                            {this.state.addition}
                         </h1>
                     </div>
 
@@ -155,12 +163,12 @@ export default class Detail extends Component {
                                 <h4>{convertPrice(detail.price)}</h4>
                             </div>
                             <div className="card my-4" style={{ backgroundColor: "#bfe1e3" }}>
-                                <h4 className="my-1 col-3">Color</h4>
+                                <h5 className="mx-3 my-1">Color</h5>
                                 <div className="btn-group btn-group-toggle col-sm-6" data-toggle="buttons">
                                     {colors.map((color, index) => (
                                         <label
                                             key={index}
-                                            className={`btn mx-1  ${
+                                            className={`btn mx-1 btn-sm  ${
                                                 color === this.state.color ? "active" : ""
                                                 }`}
                                             style={{ backgroundColor: color }}
@@ -177,13 +185,13 @@ export default class Detail extends Component {
                                         </label>
                                     ))}
                                 </div>
-                                <div className="my-2 form">
-                                    <h4 className="my-1 mx-3">Capacity</h4>
-                                    <div class="btn-group btn-group-toggle my-1 mx-3" data-toggle="buttons">
+                                <div className="my-1 form">
+                                    <h5 className="my-1 mx-3">Capacity</h5>
+                                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                         {capacities.map((capacity, index) => (
                                             <label
                                                 key={index}
-                                                className={`btn mx-1 btn-secondary ${capacity === this.state.capacity ? "active" : ""}`}
+                                                className={`btn mx-3 btn-secondary btn-sm ${capacity === this.state.capacity ? "active" : ""}`}
                                                 style={{ backgroudColor: 'white' }}
                                             >
                                                 <input
@@ -198,8 +206,8 @@ export default class Detail extends Component {
                                         ))}
                                     </div>
                                 </div>
-                                <div className="my-1 form">
-                                    <h4 className="mx-3 my-1"> Quantity</h4>
+                                <div className="form">
+                                    <h5 className="mx-3 my-1"> Quantity</h5>
 
                                     <span className=" mx-4 my-1">
                                         <button className="btn btn-primary btn-sm my-1" onClick={this.ToggleClick}>
