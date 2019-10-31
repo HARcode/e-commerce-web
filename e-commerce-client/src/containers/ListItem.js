@@ -13,14 +13,14 @@ class ListItem extends React.Component {
     let { items, pagination, sortBy } = this.props;
     return (
       <div
-        className="container"
+        className="d-flex justify-content-center"
         style={{
           marginTop: "5vh",
           marginBottom: "5vh",
           maxHeight: "90vh"
         }}
       >
-        <div className="card">
+        <div className="card card-responsive-width">
           <div className="card-header bg-info text-light">
             <div className="row justify-content-between mx-2">
               <h3>
@@ -41,7 +41,7 @@ class ListItem extends React.Component {
             }}
           >
             <Pagination {...pagination} sortBy={JSON.stringify(sortBy)} />
-            <div className="card-deck mb-3">
+            <div className="row mb-3 justify-content-between">
               {items.map((item, i) => (
                 <Item key={item.itemId} {...item} />
               ))}
