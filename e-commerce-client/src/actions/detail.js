@@ -52,7 +52,7 @@ export const likeItem = (liked = { itemId: 0, vote: 0 }) => {
   return dispatch => {
     dispatch(likeItemRedux(liked));
     return request
-      .put(itemId, { vote })
+      .put(itemId.toString(), { vote })
       .then(result => {
         let response = result.data;
         if (response.error) dispatch(likeItemFailure(itemId));
