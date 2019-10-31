@@ -15,30 +15,27 @@ export default function Item(props) {
   } = props;
   return (
     <div
-      className="col-12 col-sm-3 flex-column d-flex card-xs"
-      style={{ width: "25%" }}
+      className="col-12 col-sm-6 col-md-3 mt-2 flex-column d-flex card-xs"
+      // style={{ marginLeft: "-1rem", marginRight: "-1rem" }}
     >
-      <div className="card" style={{ width: "100%", height: "40rem" }}>
-        <div
-          className="d-flex align-items-center"
-          style={{ width: "auto", height: "25rem" }}
-        >
+      <div className="card" style={{ height: "40rem" }}>
+        <div className="d-flex align-items-center img-wrap">
           <img src={filename} className="card-img-top my-auto" alt="..." />
         </div>
         <div className="card-body flex-column d-flex sticky-bottom">
           <div className="row justify-content-between">
-            <div className="col-12 card-title h4">
+            <div className="col-12 card-title h6">
               <b>{title}</b>
             </div>
             <div className="d-flex col-auto text-left align-self-center pr-0">
               <span className="stars">
-                <span style={{ width: `${Math.min(rate,5)}rem` }} />
+                <span style={{ width: `${Math.min(rate, 5)}rem` }} />
               </span>
             </div>
 
-            <div className="d-flex col-6 text-right align-self-center pl-0">
+            <div className="d-flex col-auto text-right align-self-center pl-0">
               <div className="row justify-content-end">
-                <div className="col-auto p-0">{Math.min(rate,5)}</div>
+                <div className="col-auto p-0">{Math.min(rate, 5)}</div>
                 <div className="col-auto pl-1 pr-0">
                   (<i className="fa fa-user"></i>{" "}
                   {convertPrice(testimonials.length, "")})
