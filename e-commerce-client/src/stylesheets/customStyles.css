@@ -43,7 +43,6 @@ span.stars span {
   transform: translate(-50%, -50%);
 }
 
-
 @media all and (max-width: 576px) {
   .card-xs {
     width: 100% !important;
