@@ -11,14 +11,13 @@ export default function Item(props) {
     description,
     price,
     testimonials,
-    showDetail
+    showDetail,
+    colRate
   } = props;
+
   return (
-    <div
-      className="col-12 col-sm-6 col-md-3 mt-2 flex-column d-flex card-xs"
-      // style={{ marginLeft: "-1rem", marginRight: "-1rem" }}
-    >
-      <div className="card" style={{ height: "40rem" }}>
+    <div className="col-12 col-sm-6 col-md-3 mt-3 flex-column d-flex card-xs">
+      <div className="card mx-1" style={{ height: "40rem" }}>
         <div className="d-flex align-items-center img-wrap">
           <img src={filename} className="card-img-top my-auto" alt="..." />
         </div>
@@ -32,10 +31,9 @@ export default function Item(props) {
                 <span style={{ width: `${Math.min(rate, 5)}rem` }} />
               </span>
             </div>
-
-            <div className="d-flex col-auto text-right align-self-center pl-0">
+            <div className={`d-flex ${colRate} text-right align-self-center`}>
               <div className="row justify-content-end">
-                <div className="col-auto p-0">{Math.min(rate, 5)}</div>
+                <div className="col-auto p-0">{Number(Math.min(rate, 5).toPrecision(3))}</div>
                 <div className="col-auto pl-1 pr-0">
                   (<i className="fa fa-user"></i>{" "}
                   {convertPrice(testimonials.length, "")})
