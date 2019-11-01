@@ -13,12 +13,25 @@ const loadTestimonialsRedux = testimonials => ({
   testimonials
 });
 
-export const loadTestimonials = (itemId = 0) => {
+export const loadTestimonials = itemId => {
   return (dispatch, getState) => {
     let { data } = getState();
-    let { items } = data;
-    let itemLoaded = [...items].filter(item => item.itemId === itemId);
-    let testimonials = itemLoaded[0] ? itemLoaded[0].testimonials : [];
+    let itemLoaded, testimonials;
+    itemLoaded = JSON.parse(localStorage.getItem("itemLoaded") || "{}");
+    if (itemLoaded === {} || itemLoaded.itemId !== itemId) {
+      let { items } = data;
+      if (itemId) localStorage.setItem("itemId", itemId);
+      else itemId = Number(localStorage.getItem("itemId"));
+
+      if (Object.values(items).length === 0)
+        items = JSON.parse(localStorage.getItem("data")).items;
+
+      itemLoaded = [...items].filter(item => item.itemId === itemId)[0] || {};
+      testimonials = itemLoaded.testimonials || [];
+      localStorage.setItem("itemLoaded", JSON.stringify(itemLoaded));
+    } else {
+      testimonials = itemLoaded.testimonials;
+    }
     dispatch(loadTestimonialsRedux(testimonials));
   };
 };
@@ -45,21 +58,15 @@ const addTestimonialFailure = ({ itemId, rate, testimonials }) => ({
   testimonials
 });
 
-export const addTestimonial = (
-  rated = { itemId: 0, testimonial: { rate: 5, name: "", text: "" } }
-) => {
-  let { itemId, testimonial } = rated;
-  return (dispatch, getState) => {
-    let { data } = getState();
-    let { items } = data;
-    let itemRated = [...items].filter(item => item.itemId === itemId);
-    let testimonials = itemRated[0] ? itemRated[0].testimonials : [];
-    testimonials = [...testimonials, testimonial];
-    let rates = [...testimonials].map(testi => testi.rate);
+export const addTestimonial = (rated = { itemId: 0, testimonials: [] }) => {
+  // testimonials have been updated in container
+  let { itemId, testimonials } = rated;
+  return dispatch => {
+    let rates = testimonials.map(testi => testi.rate);
     let rate = mean(rates);
     dispatch(addTestimonialsRedux({ itemId, rate, testimonials }));
     return request
-      .put(itemId, {
+      .put(itemId.toString(), {
         rate,
         testimonials: JSON.stringify(testimonials)
       })

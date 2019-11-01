@@ -19,17 +19,19 @@ const loadDetailRedux = itemLoaded => ({
 export const loadDetail = itemId => {
   return (dispatch, getState) => {
     let { data, router } = getState();
-    let { items } = data;
+    let itemLoaded = JSON.parse(localStorage.getItem("itemLoaded") || "{}");
+    if (itemLoaded === {} || itemLoaded.itemId !== itemId) {
+      let { items } = data;
+      if (itemId) localStorage.setItem("itemId", itemId);
+      else itemId = Number(localStorage.getItem("itemId"));
 
-    if (itemId) localStorage.setItem("itemId", itemId);
-    else itemId = Number(localStorage.getItem("itemId"));
+      if (Object.values(items).length === 0)
+        items = JSON.parse(localStorage.getItem("data")).items;
 
-    if (Object.values(items).length === 0)
-      items = JSON.parse(localStorage.getItem("data")).items;
-
-    let itemLoaded = [...items].filter(item => item.itemId === itemId);
-    itemLoaded = itemLoaded[0] ? itemLoaded[0] : {};
-
+      itemLoaded = [...items].filter(item => item.itemId === itemId);
+      itemLoaded = itemLoaded[0] || {};
+      localStorage.setItem("itemLoaded", JSON.stringify(itemLoaded));
+    }
     dispatch(loadDetailRedux(itemLoaded));
     if (router.location.pathname !== "/detail") dispatch(push("/detail"));
   };
