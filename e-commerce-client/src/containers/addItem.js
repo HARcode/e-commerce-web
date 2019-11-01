@@ -312,7 +312,7 @@ class AddItem extends Component {
     });
 
     return (
-      <div className="page-wrapper bg-info p-t-45 p-b-50">
+      <div className="container-fluid bg-info p-t-45 p-b-50">
         <div className="wrapper wrapper--w900">
           <div className="card card-6">
             <div className="card-heading">
