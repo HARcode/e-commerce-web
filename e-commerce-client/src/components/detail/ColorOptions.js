@@ -3,10 +3,11 @@ import React from "react";
 export default function ColorOptions({ colors, activeColor, onChange }) {
   return (
     <>
-      <h5 className="mx-3 my-1">Color</h5>
+      <h5 className="ml-3 my-1">Color</h5>
       <div
-        className="btn-group btn-group-toggle col-sm-6"
+        className="btn-group btn-group-toggle ml-3"
         data-toggle="buttons"
+        style={{width: `${1.1*colors.length}rem`}}
       >
         {colors.map((color, index) => (
           <label

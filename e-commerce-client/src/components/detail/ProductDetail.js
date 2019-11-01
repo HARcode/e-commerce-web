@@ -1,41 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 import { Tabs, Tab } from "react-bootstrap";
 import ReactMarkdown from "react-markdown";
+import Testimonial from "./Testimonial";
 
-export default function ProductDetail({ detail, testimonials }) {
+export default function ProductDetail({ detail, testimonials, activeTab }) {
+  const [key, setKey] = useState(activeTab);
   return (
     <div className="container-fluid">
       <div className="col-md-12 product-info">
-        <Tabs defaultActiveKey="home" id="uncontrolled-tab-example">
-          <Tab eventKey="home" title="Product Detail">
+        <Tabs activeKey={key} onSelect={k => setKey(k)}>
+          <Tab eventKey="detail" title="Product Detail">
             <div
               className="container mt-3"
               style={{ maxHeight: "25vh", overflowY: "auto" }}
             >
               <div
-                id="uncontrolled-tab-example-tabpane-home"
-                aria-labelledby="uncontrolled-tab-example-tab-home"
                 role="tabpanel"
-                aria-hidden="false"
-                className="fade tab-pane active show"
+                className={`fade tab-pane ${
+                  key === "detail" ? " active show" : ""
+                }`}
               >
                 <ReactMarkdown source={detail} />
               </div>
             </div>
           </Tab>
-          <Tab eventKey="profile" title="Testimonial">
+          <Tab eventKey="testimonials" title="Testimonial">
             <div
               className="container product-info mt-3"
               style={{ maxHeight: "25vh", overflowY: "auto" }}
             >
               <div
-                id="uncontrolled-tab-example-tabpane-profile"
-                aria-labelledby="uncontrolled-tab-example-tab-profile"
                 role="tabpanel"
-                aria-hidden="false"
-                className="fade tab-pane active show"
+                className={`fade tab-pane ${
+                  key === "testimonials" ? " active show" : ""
+                }`}
               >
-                <p>{testimonials}</p>
+                {testimonials
+                  .sort((obj1, obj2) => obj2.rate - obj1.rate)
+                  .map((testi, i) => (
+                    <Testimonial key={i} {...testi} />
+                  ))}
               </div>
             </div>
           </Tab>

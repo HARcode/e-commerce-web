@@ -29,7 +29,7 @@ export default function MainInfo({
         </div>
         <div className="col-auto d-flex text-right align-self-center pl-0">
           <div className="row justify-content-end">
-            <div className="col-auto p-0">{Math.min(rate || 0, 5)}</div>
+            <div className="col-auto p-0">{Number(Math.min(rate || 0, 5).toPrecision(3))}</div>
             <div className="col-auto pl-1 pr-0">
               (<i className="fa fa-user"></i> {convertPrice(numOfRaters, "")})
             </div>
