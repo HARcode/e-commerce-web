@@ -1,23 +1,63 @@
 import React from "react";
 import { connect } from "react-redux";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { loadData } from "../actions/data";
 import Item from "./Item";
-import Pagination from "./Pagination";
 
 class ListItem extends React.Component {
-  componentDidMount() {
-    this.props.loadItems();
+  constructor(props) {
+    super(props);
+    this.state = {
+      colRate: "col-auto pl-0",
+      page: 1,
+      hasMore: true
+    };
   }
 
+  componentDidMount() {
+    this.props.loadItems();
+    window.addEventListener("resize", this.updateColRate);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateColRate);
+  }
+
+  fetchMoreData = () => {
+    const { pagination, loadItems } = this.props;
+    const { numOfPages } = pagination;
+    if (this.state.page >= numOfPages) {
+      this.setState({ hasMore: false });
+      return;
+    }
+    this.setState(
+      state => ({ page: state.page + 1 }),
+      () => {
+        loadItems(this.state.page);
+      }
+    );
+  };
+
+  updateColRate = () => {
+    let screenWidth = window.innerWidth;
+    let newColRate =
+      (screenWidth >= 769 && screenWidth <= 1000) || screenWidth < 256
+        ? "col-12 ml-3 mt-1"
+        : "col-auto pl-0";
+    this.setState({ colRate: newColRate });
+  };
+
   render() {
-    let { items, pagination, sortBy } = this.props;
+    let { items } = this.props;
     return (
       <div
-        className="d-flex justify-content-center"
+        className="d-flex justify-content-center container-fluid"
         style={{
           marginTop: "5vh",
           marginBottom: "5vh",
-          maxHeight: "90vh"
+          maxHeight: "90vh",
+          alignSelf: "center",
+          display: "flex"
         }}
       >
         <div className="card card-responsive-width">
@@ -34,18 +74,44 @@ class ListItem extends React.Component {
             </div>
           </div>
           <div
+            id="scrollable"
             className="card-body"
             style={{
-              maxHeight: "80vh",
+              height: "75vh",
               overflowY: "auto"
             }}
           >
-            <Pagination {...pagination} sortBy={JSON.stringify(sortBy)} />
-            <div className="row mb-3 justify-content-between">
-              {items.map((item, i) => (
-                <Item key={item.itemId} {...item} />
-              ))}
-            </div>
+            <InfiniteScroll
+              dataLength={items.length}
+              next={this.fetchMoreData}
+              hasMore={this.state.hasMore}
+              scrollableTarget="scrollable"
+              style={{ overflow: "hide" }}
+              scrollThreshold={1}
+              loader={
+                <div className="d-flex justify-content-center">
+                  <div
+                    className="spinner-border text-primary"
+                    role="status"
+                  ></div>
+                </div>
+              }
+              endMessage={
+                <div className="row justify-content-center">
+                  <hr className="hr hr-primary" />
+                </div>
+              }
+            >
+              <div className="row mb-3">
+                {items.map((item, i) => (
+                  <Item
+                    key={item.itemId}
+                    {...item}
+                    colRate={this.state.colRate}
+                  />
+                ))}
+              </div>
+            </InfiniteScroll>
           </div>
         </div>
       </div>
@@ -56,7 +122,8 @@ class ListItem extends React.Component {
 const mapStateToProps = state => ({ ...state.data });
 
 const mapDispatchToProps = dispatch => ({
-  loadItems: () => dispatch(loadData())
+  loadItems: (page = 1) =>
+    dispatch(loadData({ headers: { sortBy: "", limit: 4, page } }))
 });
 
 export default connect(
