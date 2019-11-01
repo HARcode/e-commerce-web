@@ -18,30 +18,35 @@ export default function detailTestimonial(
   action
 ) {
   let { type, itemLoaded, itemId, vote, stock, rate, testimonials } = action;
+  let newDetail;
   switch (type) {
     case LOAD_DETAIL:
       return { ...state, detail: itemLoaded, sent: true };
 
     case LIKE_ITEM:
     case LIKE_ITEM_SUCCESS:
+      newDetail = {
+        ...state.detail,
+        ...(state.detail.itemId === itemId && { vote })
+      };
+      localStorage.setItem("itemLoaded", JSON.stringify(newDetail));
       return {
         ...state,
-        detail: {
-          ...state.detail,
-          ...(state.detail.itemId === itemId && { vote })
-        },
-        sent: true
+        detail: newDetail,
+        ...(state.detail.itemId === itemId && { sent: true })
       };
 
     case BUY_ITEM:
     case BUY_ITEM_SUCCESS:
+      newDetail = {
+        ...state.detail,
+        ...(state.detail.itemId === itemId && { stock })
+      };
+      localStorage.setItem("itemLoaded", JSON.stringify(newDetail));
       return {
         ...state,
-        detail: {
-          ...state.detail,
-          ...(state.detail.itemId === itemId && { stock })
-        },
-        sent: true
+        detail: newDetail,
+        ...(state.detail.itemId === itemId && { sent: true })
       };
 
     case LOAD_TESTIMONIALS:
@@ -49,12 +54,14 @@ export default function detailTestimonial(
 
     case ADD_TESTIMONIALS:
     case ADD_TESTIMONIALS_SUCCESS:
+      newDetail = {
+        ...state.detail,
+        ...(state.detail.itemId === itemId && { rate, testimonials })
+      };
+      localStorage.setItem("itemLoaded", JSON.stringify(newDetail));
       return {
         ...state,
-        detail: {
-          ...state.detail,
-          ...(state.detail.itemId === itemId && { rate })
-        },
+        detail: newDetail,
         ...(state.detail.itemId === itemId && { testimonials }),
         ...(state.detail.itemId === itemId && { sent: true })
       };
