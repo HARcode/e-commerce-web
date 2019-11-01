@@ -7,6 +7,7 @@ import Quantity from "./detail/Quantity";
 import BuyButton from "./detail/BuyButton";
 import LikeButton from "./detail/LikeButton";
 import ProductDetail from "./detail/ProductDetail";
+import AddTestimonial from "./detail/AddTestimonial";
 import "../stylesheets/customStyles.css";
 
 export default class Detail extends Component {
@@ -18,7 +19,10 @@ export default class Detail extends Component {
       size: null,
       clicks: 0,
       show: false,
-      liked: false
+      liked: false,
+      showModal: false,
+      activeTab: "detail",
+      showAlert: false
     };
   }
 
@@ -62,11 +66,19 @@ export default class Detail extends Component {
     let itemId = this.props.detail.itemId;
     let dataClicks = this.state.clicks;
     let dataStock = this.props.detail.stock;
+    let spec =
+      this.props.detail.category === "Smartphone"
+        ? this.state.capacity
+        : this.state.size;
 
-    let stock = dataStock - dataClicks;
-
-    if (itemId && stock) {
-      this.props.buyItem(itemId, stock);
+    if (dataClicks > 0 && spec && this.state.color) {
+      let stock = dataStock - dataClicks;
+      if (itemId && stock) {
+        this.props.buyItem(itemId, stock);
+        this.setState({ showModal: true, showAlert: false });
+      }
+    } else {
+      this.setState({ showAlert: true });
     }
   };
 
@@ -81,24 +93,29 @@ export default class Detail extends Component {
     });
   };
 
+  closeModal = () => {
+    this.setState({
+      showModal: false,
+      activeTab: "testimonials",
+      color: null,
+      capacity: null,
+      size: null,
+      clicks: 0,
+      show: false
+    });
+  };
+
   render() {
     let { detail, testimonials } = this.props;
     let colors = detail.colors || [];
     let capacities = detail.capacities || [];
     let sizes = detail.sizes || [];
     let { filename, title, brand, vote, rate, price, category, stock } = detail;
+    testimonials = testimonials || [];
     let numOfRaters = testimonials.length;
 
     return (
-      <div
-        className="container"
-        style={{
-          height: "95vh",
-          overflowY: "auto",
-          marginTop: "2.5vh",
-          marginBottom: "2.5vh"
-        }}
-      >
+      <div className="container">
         <div className="card" style={{ height: "100%" }}>
           <div className="card-header" style={{ backgroundColor: "#bfe1e3" }}>
             <h1
@@ -110,10 +127,17 @@ export default class Detail extends Component {
             >
               <b>Detail</b>
             </h1>
+            {this.state.showAlert && (
+              <div className="alert alert-danger" role="alert">
+                Please choose{" "}
+                <b>{category === "Smartphone" ? "capacity" : "size"}</b>,
+                <b> color</b>, and <b>quantity</b>
+              </div>
+            )}
           </div>
           <div className="card-body">
             <div
-              className="row mx-3"
+              className="row mx-3 d-flex align-items-center"
               style={{ maxHeight: "70vh", overflowY: "auto" }}
             >
               <ItemImage filename={filename} />
@@ -160,7 +184,24 @@ export default class Detail extends Component {
                 </div>
               </div>
             </div>
-            <ProductDetail detail={detail.detail} testimonials={testimonials} />
+            {this.state.showModal && (
+              <AddTestimonial
+                show={this.state.showModal}
+                category={category}
+                title={title}
+                color={this.state.color}
+                capacity={this.state.capacity}
+                size={this.state.size}
+                itemId={detail.itemId}
+                testimonials={testimonials}
+                closeModal={this.closeModal}
+              />
+            )}
+            <ProductDetail
+              detail={detail.detail}
+              testimonials={testimonials}
+              activeTab={this.state.activeTab}
+            />
           </div>
         </div>
       </div>
