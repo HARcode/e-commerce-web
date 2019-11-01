@@ -24,8 +24,9 @@ export default function data(
   switch (type) {
     case LOAD_DATA_SUCCESS:
     case FILTER_DATA_SUCCESS:
+      let newItems = pagination.page > 1 ? [...state.items, ...items] : items;
       return {
-        items: items.map(item => ({ ...item, sent: true })),
+        items: newItems.map(item => ({ ...item, sent: true })),
         pagination,
         sortBy
       };
